@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smarty Pants</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SPA Route Radios (default: Home checked) -->
+    <input class="router" type="radio" name="route" id="nav-home" checked>
+    <input class="router" type="radio" name="route" id="nav-flashyNumbers">
+    <input class="router" type="radio" name="route" id="nav-inAndOut">
+
+    <!-- Mobile Sidebar Toggle -->
+    <input type="checkbox" id="toggle">
+    <label for="toggle" class="menu-btn">☰ Menu</label>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sidebar navigation">
+        <nav class="nav" role="tablist" aria-orientation="vertical">
+            <label class="lbl-home" for="nav-home" role="tab" aria-controls="page-home" aria-selected="true">
+                <span class="dot"> </span><span>Home</span>
+            </label>
+            <label class="lbl-flashyNumbers" for="nav-flashyNumbers" role="tab" aria-controls="page-flashyNumbers">
+                <span class="dot"> </span><span>Flashy Numbers</span>
+            </label>
+            <label class="lbl-inAndOut" for="nav-inAndOut" role="tab" aria-controls="page-inAndOut">
+                <span class="dot"> </span><span>In and Out</span>
+            </label>
+        </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+        <div class="container">
+            <!-- HOME -->
+            <section id="page-home" class="page" role="tabpanel" aria-labelledby="nav-home">
+                <h1>Welcome 👋</h1>
+                <p>This is a <strong>single page application</strong> powered only by HTML and CSS. Use the menu to
+                    switch views without reloading the page.</p>
+                <div class="grid">
+                    <div class="card">
+                        <h2>Fast</h2>
+                        <p>No JavaScript needed. Navigation is instant using CSS selectors.</p>
+                    </div>
+                    <div class="card">
+                        <h2>Responsive</h2>
+                        <p>The sidebar collapses to a slide-in drawer on mobile.</p>
+                    </div>
+                    <div class="card">
+                        <h2>Accessible</h2>
+                        <p>Labels are tied to radios; sections are mapped with <code>aria-controls</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT -->
+            <section id="page-flashyNumbers" class="page" role="tabpanel" aria-labelledby="nav-flashyNumbers">
+                <header>
+                    <div class="logo">✨ <span class="spark">Flash Number!</span> <span class="sub">— shout it out</span></div>
+                </header>
+                
+                <div class="wrap">
+                    <!-- Controls -->
+                    <section class="panel" aria-label="Controls">
+                        <h2>Game Settings</h2>
+                        <div class="row">
+                            <div>
+                                <label for="min">Min number</label>
+                                <input id="min" type="number" min="0" value="1">
+                            </div>
+                            <div>
+                                <label for="max">Max number</label>
+                                <input id="max" type="number" min="1" value="20">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <label for="flash">Flash (ms)</label>
+                                <input id="flash" type="number" min="400" step="100" value="1000">
+                            </div>
+                            <div>
+                                <label for="autoNext">Auto next</label>
+                                <input id="autoNext" type="checkbox" checked />
+                                <div class="hint">Start new round after marking</div>
+                            </div>
+                        </div>
+                        <div class="btnbar">
+                            <button class="primary" id="start">Start Round ▶</button>
+                            <button class="ghost" id="peek">Peek 🔍</button>
+                            <button class="ok" id="correct" disabled>Correct ✓</button>
+                            <button class="bad" id="incorrect" disabled>Incorrect ✗</button>
+                            <button class="ghost" id="reset">Reset ↺</button>
+                        </div>
+                        <p class="hint" style="margin-top:10px">
+                            Flow: <strong>Start Round</strong> → number flashes → children shout → teacher marks <em>Correct</em> or
+                            <em>Incorrect</em>.
+                        </p>
+                    </section>
+                
+                    <!-- Stage -->
+                    <section class="stage" aria-label="Game stage">
+                        <div class="topbar">
+                            <div class="mascot" id="mascot">🦊 <span class="hint">Ready?</span></div>
+                            <div class="stats">
+                                <span>Round: <b id="round">0</b></span>
+                                <span>Score: <b id="score">0</b></span>
+                                <span>Streak: <b id="streak">0</b></span>
+                                <span>Accuracy: <b id="acc">0%</b></span>
+                            </div>
+                        </div>
+                
+                        <div class="timer" aria-hidden="true"><i id="bar"></i></div>
+                
+                        <div class="card">
+                            <div class="number" id="number">?</div>
+                            <div class="cover active" id="cover">
+                                <div class="prompt">
+                                    <div style="font-size:20px; font-weight:700;">Say the number!</div>
+                                    <div class="hint">Teacher: click ✓ or ✗ after kids answer</div>
+                                </div>
+                            </div>
+                            <div class="confetti" id="confetti"></div>
+                            <div class="shelf" id="shelf" aria-live="polite"></div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- Spot the number -->
+            <section id="page-inAndOut" class="page" role="tabpanel" aria-labelledby="nav-inAndOut">
+                <header>
+                    <div class="logo">🎯 <span class="spark">Spot The Number!</span> <span class="sub">— find the target</span></div>
+                </header>
+                
+                <div class="wrap">
+                    <!-- Controls -->
+                    <section class="panel" aria-label="Controls">
+                        <h2>Game Settings</h2>
+                        <div class="row">
+                            <div>
+                                <label for="stn-min">Min number</label>
+                                <input id="stn-min" type="number" min="0" value="0">
+                            </div>
+                            <div>
+                                <label for="stn-max">Max number</label>
+                                <input id="stn-max" type="number" min="1" value="9">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <label for="stn-flash">Flash (ms)</label>
+                                <input id="stn-flash" type="number" min="400" step="100" value="1000">
+                            </div>
+                            <div>
+                                <label for="stn-autoNext">Auto next</label>
+                                <input id="stn-autoNext" type="checkbox" checked />
+                                <div class="hint">Start new round after marking</div>
+                            </div>
+                        </div>
+                        <div class="btnbar">
+                            <button class="primary" id="stn-start">Start Round ▶</button>
+                            <button class="ghost" id="stn-peek">Peek 🔍</button>
+                            <button class="ghost" id="stn-reveal">Reveal Matches ✨</button>
+                            <button class="ok" id="stn-correct" disabled>Correct ✓</button>
+                            <button class="bad" id="stn-incorrect" disabled>Incorrect ✗</button>
+                            <button class="ghost" id="stn-reset">Reset ↺</button>
+                        </div>
+                        <p class="hint" style="margin-top:10px">
+                            Flow: <strong>Start Round</strong> → tiles flash → kids point to where the
+                            <em>Target</em> appears among the other tiles → teacher marks ✓ or ✗.
+                        </p>
+                    </section>
+                
+                    <!-- Stage -->
+                    <section class="stage" aria-label="Game stage">
+                        <div class="topbar">
+                            <div class="mascot" id="stn-mascot">🦄 <span class="hint">Ready?</span></div>
+                            <div class="stats">
+                                <span>Round: <b id="stn-round">0</b></span>
+                                <span>Score: <b id="stn-score">0</b></span>
+                                <span>Streak: <b id="stn-streak">0</b></span>
+                                <span>Accuracy: <b id="stn-acc">0%</b></span>
+                            </div>
+                        </div>
+                
+                        <div class="timer" aria-hidden="true"><i id="stn-bar"></i></div>
+                        <div class="card" id="stn-card">
+                                <div class="grid-3x3">
+                                    <div class="cell">1</div>
+                                    <div class="cell">2</div>
+                                    <div class="cell">3</div>
+                                    <div class="cell-none"></div>
+                                    <div class="cell">5</div>
+                                    <div class="cell-none"></div>
+                                    <div class="cell">7</div>
+                                    <div class="cell">8</div>
+                                    <div class="cell">9</div>
+                                </div>
+                            <div class="confetti" id="stn-confetti"></div>
+                            <div class="shelf" id="stn-shelf" aria-live="polite"></div>
+                        </div>
+                    </section>
+                </div>
+
+            </section>
+            
+        </div>
+    </main>
+
+    <script src="app.js" defer></script>
+    <script src="spotTheNumber.js" defer></script>
+</body>
+
+</html>

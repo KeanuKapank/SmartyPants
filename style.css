@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+    --sidebar-w: 260px;
+    --bg: #0f172a;
+    /* slate-900 */
+    --bg-2: #111827;
+    /* gray-900 */
+    --fg: #e5e7eb;
+    /* gray-200 */
+    --muted: #94a3b8;
+    /* slate-400 */
+    --accent: #22d3ee;
+    /* cyan-400 */
+    --hover: #1f2937;
+    /* gray-800 */
+    --bug: url("rainbow.jpg");
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    background: linear-gradient(120deg, var(--bg), #0b1026 60%);
+    color: var(--fg);
+    min-height: 100dvh;
+}
+
+/* === Responsive Sidebar Base (from your template) === */
+#toggle {
+    display: none;
+}
+
+.menu-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    background: var(--bg-2);
+    color: var(--fg);
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 10px;
+    z-index: 1000;
+    border: 1px solid #1f2a44;
+    user-select: none;
+}
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--sidebar-w);
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(6px);
+    border-right: 1px solid #1f2a44;
+    padding-top: 64px;
+    padding-bottom: 20px;
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    overflow-y: auto;
+}
+
+#toggle:checked~.sidebar {
+    transform: translateX(0);
+}
+
+.nav {
+    display: grid;
+    gap: 6px;
+    padding: 8px;
+}
+
+.nav label {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--fg);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background .15s ease, border-color .15s ease, transform .06s ease;
+    user-select: none;
+}
+
+.nav label:hover {
+    background: var(--hover);
+}
+
+.nav .hint {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* === SPA "routing" via radio buttons === */
+/* Hide radios; keep them first in DOM so :checked can control below sections */
+.router {
+    display: none;
+}
+
+.content {
+    margin-left: 0;
+    padding: 24px;
+    transition: margin-left .3s ease;
+}
+
+#toggle:checked~.content {
+    margin-left: var(--sidebar-w);
+}
+
+/* Desktop: sidebar always visible */
+@media (min-width: 768px) {
+    .menu-btn {
+        display: none;
+    }
+
+    .sidebar {
+        transform: none;
+    }
+
+    .content {
+        margin-left: var(--sidebar-w);
+    }
+}
+
+/* Pages hidden by default; show the one mapped to the checked radio */
+.page {
+    display: none;
+    animation: fade .18s ease-out;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Active state styling for the selected nav item */
+/* We style labels via the :checked state of their corresponding input */
+#nav-home:checked~.sidebar .lbl-home,
+#nav-flashyNumbers:checked~.sidebar .lbl-flashyNumbers,
+#nav-inAndOut:checked~.sidebar .lbl-inAndOut {
+    background: #0b1224;
+    border-color: #23315c;
+    box-shadow: inset 0 0 0 1px #1f2a44;
+}
+
+#nav-home:checked~.sidebar .lbl-home .dot,
+#nav-flashyNumbers:checked~.sidebar .lbl-flashyNumbers .dot,
+#nav-inAndOut:checked~.sidebar .lbl-inAndOut .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    justify-self: center;
+}
+
+/* Route -> Page mapping */
+#nav-home:checked~.content #page-home,
+#nav-inAndOut:checked~.content #page-inAndOut,
+#nav-flashyNumbers:checked~.content #page-flashyNumbers,
+#nav-contact:checked~.content #page-contact {
+    display: block;
+}
+
+/* Utility */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid #1f2a44;
+    border-radius: 16px;
+    padding: 18px;
+    margin: 12px 0;
+}
+
+h1 {
+    margin: 6px 0 14px;
+    font-size: clamp(22px, 3.4vw, 34px);
+}
+
+h2 {
+    margin: 12px 0;
+    font-size: clamp(18px, 2.6vw, 24px);
+    color: var(--accent);
+}
+
+p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+a.inline {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #1f2a44;
+    text-decoration: none;
+    color: var(--fg);
+    background: #0b1224;
+}
+
+.btn:hover {
+    background: #101a35;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/*Flashy Numbers*/
+header {
+    padding: 16px clamp(16px, 4vw, 32px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: clamp(22px, 4vw, 30px);
+    letter-spacing: .3px;
+}
+
+.logo .spark {
+    color: var(--brand)
+}
+
+.sub {
+    color: var(--muted);
+    font-size: 14px
+}
+
+.wrap {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+    padding: 0 clamp(16px, 4vw, 32px) 28px;
+}
+
+@media (min-width: 980px) {
+    .wrap {
+        grid-template-columns: 320px 1fr;
+        align-items: start;
+    }
+}
+
+/* Control panel */
+.panel {
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+}
+
+.panel h2 {
+    margin: .2rem 0 8px;
+    font-size: 18px
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 8px 0
+}
+
+.row label {
+    font-size: 13px;
+    color: var(--muted)
+}
+
+.row input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background: #fbfdff;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.btnbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px
+}
+
+button {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    background: #eaf6ff;
+    color: #0f3f5a;
+    transition: transform .05s ease, filter .1s ease;
+}
+
+button:hover {
+    filter: brightness(0.98)
+}
+
+button:active {
+    transform: translateY(1px)
+}
+
+.primary {
+    background: var(--brand);
+    color: white
+}
+
+.ok {
+    background: var(--ok);
+    color: white
+}
+
+.bad {
+    background: var(--bad);
+    color: white
+}
+
+.ghost {
+    background: #f3f4f6;
+    color: #374151
+}
+
+/* Stage */
+.stage {
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    position: relative;
+    min-height: 420px;
+    overflow: hidden;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.mascot {
+    font-size: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats {
+    display: flex;
+    gap: 14px;
+    font-size: 14px;
+    color: #0f3f5a;
+    flex-wrap: wrap;
+}
+
+.stats span {
+    background: #eef6ff;
+    padding: 6px 10px;
+    border-radius: 999px
+}
+
+/* Number card */
+.card {
+    margin: 18px auto 0;
+    width: min(520px, 95%);
+    aspect-ratio: 4/3;
+    border-radius: 24px;
+    border: 2px dashed #cfe8fb;
+    display: grid;
+    place-items: center;
+    position: relative;
+    background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.number {
+    font-size: clamp(64px, 16vw, 160px);
+    font-weight: 900;
+    letter-spacing: .04em;
+    color: #0b3c59;
+    text-shadow: 0 6px 0 #dff1ff, 0 10px 22px rgba(0, 0, 0, .08);
+    opacity: 0;
+    transform: scale(.96);
+    transition: opacity .12s ease, transform .25s cubic-bezier(.2, .8, .2, 1);
+}
+
+.number.show {
+    opacity: 1;
+    transform: scale(1)
+}
+
+.cover {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+        repeating-linear-gradient(45deg, #fffa 0 4px, #fff6 4px 8px),
+        radial-gradient(1200px 400px at 50% -20%, #f0fbff 0%, transparent 60%),
+        transparent;
+    backdrop-filter: blur(2px);
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+}
+
+.cover.active {
+    opacity: 1;
+    pointer-events: auto
+}
+
+.cover .prompt {
+    text-align: center;
+    color: #0f3f5a;
+    background: #ffffffd9;
+    border: 1px solid #eaf2f8;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(2, 6, 23, .08);
+}
+
+.timer {
+    height: 8px;
+    width: 100%;
+    background: #eef2ff;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.timer>i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--brand), #7cd3ff);
+    transition: width .1s linear;
+}
+
+/* Reward sticker shelf */
+.shelf {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 50%;
+}
+
+.sticker {
+    font-size: 24px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .15));
+    transform: rotate(-6deg) scale(1);
+    animation: pop .3s ease-out;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(.4);
+        opacity: 0
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1
+    }
+}
+
+/* Confetti */
+.confetti {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.confetti i {
+    position: absolute;
+    width: 10px;
+    height: 14px;
+    top: -20px;
+    opacity: .9;
+    border-radius: 2px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(120vh) rotate(540deg);
+    }
+}
+
+/*Spot the number*/
+.grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    margin: 40px auto;
+}
+
+.cell {
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #22d3ee;
+    background: linear-gradient(#ffffff, #f1f5f9);
+    overflow: hidden;
+    background-image: var(--bug) /*This is an image*/;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+.cell-none {
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    background: inherit;
+}

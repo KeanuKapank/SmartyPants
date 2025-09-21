@@ -415,7 +415,7 @@ button:active {
     font-size: clamp(64px, 16vw, 160px);
     font-weight: 900;
     letter-spacing: .04em;
-    color: #0b3c59;
+    color: #000000;
     text-shadow: 0 6px 0 #dff1ff, 0 10px 22px rgba(0, 0, 0, .08);
     opacity: 0;
     transform: scale(.96);
@@ -543,7 +543,7 @@ button:active {
     place-items: center;
     font-size: 4rem;
     font-weight: 700;
-    color: #22d3ee;
+    color: #000000;
     background: linear-gradient(#ffffff, #f1f5f9);
     overflow: hidden;
     background-image: var(--bug) /*This is an image*/;
